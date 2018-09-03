@@ -1,0 +1,7 @@
+README.md
+setup.py
+python_in_app_payments/__init__.py
+python_in_app_payments.egg-info/PKG-INFO
+python_in_app_payments.egg-info/SOURCES.txt
+python_in_app_payments.egg-info/dependency_links.txt
+python_in_app_payments.egg-info/top_level.txt

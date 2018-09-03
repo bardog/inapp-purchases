@@ -1,0 +1,15 @@
+Metadata-Version: 2.1
+Name: python-in-app-payments
+Version: 0.1.0
+Summary: Python in-app payment validator for Apple AppStore and Google Play
+Home-page: https://github.com/adanmauri/python-in-app-payments.git
+Author: Adán Mauri Ungaro
+Author-email: adan.mauri@gmail.com
+License: Apache License Version 2.0
+Description: # python-in-app-payment
+        Python in-app payment validator for Apple AppStore and Google Play
+        
+Platform: UNKNOWN
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Operating System :: OS Independent
+Description-Content-Type: text/markdown
