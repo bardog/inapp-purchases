@@ -1,2 +1,2 @@
 # python-in-app-payment
-Python in-app payment validator for Apple AppStore and Google Play
+Python in-app payments validator for Apple AppStore and Google Play
