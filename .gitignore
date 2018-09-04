@@ -1,3 +1,5 @@
 dist/
 *.egg-info/
+build/
+.pypirc
 *.pyc

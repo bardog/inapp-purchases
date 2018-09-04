@@ -1,6 +1,6 @@
 # coding: utf8
 
-from python_inapp_purchase.response import Response
+from python_inapp_purchases.response import Response
 
 class InAppPurchase(object):
 

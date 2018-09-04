@@ -1,3 +1,2 @@
-# python-inapp-purchase
-Python in-app purchase for Apple AppStore and Google Play
-
+# python-inapp-purchases
+Library to manage in-app purchases for Apple AppStore and Google Play

@@ -4,7 +4,7 @@ from distutils.core import setup
 import setuptools
 
 def version():
-    verstrline = open('python_inapp_purchase/__init__.py', "rt").read()
+    verstrline = open('python_inapp_purchases/__init__.py', "rt").read()
     mob = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", verstrline, re.M)
     if mob:
         return mob.group(1)
@@ -20,7 +20,7 @@ def long_description():
 
 setup(
     # Application name
-    name='python-in-app-purchase',
+    name='python-inapp-purchases',
 
     # Version number
     version=version(),
@@ -36,8 +36,8 @@ setup(
     packages=setuptools.find_packages(),
 
     # Details
-    url='https://github.com/adanmauri/python-inapp-purchase.git',
-    description='Python in-app purchases for Apple AppStore and Google Play',
+    url='https://github.com/adanmauri/python-inapp-purchases.git',
+    description='Library to manage in-app purchases for Apple AppStore and Google Play',
     long_description=long_description(),
     long_description_content_type="text/markdown",
     classifiers=[

@@ -2,8 +2,8 @@
 
 from google.oauth2 import service_account
 from google.auth.transport.requests import AuthorizedSession
-from python_inapp_purchase.inapp_purchase import InAppPurchase
-from python_inapp_purchase.subscription_status import SubscriptionStatus
+from python_inapp_purchases.inapp_purchase import InAppPurchase
+from python_inapp_purchases.subscription_status import SubscriptionStatus
 
 class GooglePlayInAppPurchase(InAppPurchase):
     scopes = ['https://www.googleapis.com/auth/androidpublisher']

@@ -2,8 +2,8 @@
 
 import json
 import requests
-from python_inapp_purchase.inapp_purchase import InAppPurchase
-from python_inapp_purchase.subscription_status import SubscriptionStatus
+from python_inapp_purchases.inapp_purchase import InAppPurchase
+from python_inapp_purchases.subscription_status import SubscriptionStatus
 
 class AppStoreInAppPurchase(InAppPurchase):
     base_sandbox_uri = 'https://sandbox.itunes.apple.com/verifyReceipt'
