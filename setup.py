@@ -1,11 +1,10 @@
 #-*- coding: utf-8 -*-
 import re
+from distutils.core import setup
 import setuptools
 
-from distutils.core import setup
-
 def version():
-    verstrline = open('python_in_app_payments/__init__.py', "rt").read()
+    verstrline = open('python_inapp_purchase/__init__.py', "rt").read()
     mob = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", verstrline, re.M)
     if mob:
         return mob.group(1)
@@ -20,18 +19,34 @@ def long_description():
         return readme_file.read()
 
 setup(
-    name='python-in-app-payments',
+    # Application name
+    name='python-in-app-purchase',
+
+    # Version number
     version=version(),
+
+    # Application author details
     author='Adán Mauri Ungaro',
     author_email='adan.mauri@gmail.com',
-    description='Python in-app payment validator for Apple AppStore and Google Play',
+
+    # Licence
+    license='Apache License Version 2.0',
+
+    # Packages
+    packages=setuptools.find_packages(),
+
+    # Details
+    url='https://github.com/adanmauri/python-inapp-purchase.git',
+    description='Python in-app purchases for Apple AppStore and Google Play',
     long_description=long_description(),
     long_description_content_type="text/markdown",
-    url='https://github.com/adanmauri/python-in-app-payments.git',
-    packages=setuptools.find_packages(),
-    license='Apache License Version 2.0',
     classifiers=[
         "License :: OSI Approved :: Apache Software License",
         "Operating System :: OS Independent",
     ],
+    keywords=('python in-app payment payments purchase purchases google play apple '
+              'appstore iphone android '),
+
+    # Dependent packages
+    install_requires=requirements(),
 )
