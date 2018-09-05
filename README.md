@@ -19,7 +19,8 @@ Currently inapp-purchases supports Google Play and App Store subscription servic
 from inapp_purchases.google_play import GooglePlayService
 
 service = GooglePlayService(
-    service_account_info='service-info.json',
+    service_account_file='service-info.json',
+    # or service_account_info='service-info.json'
     package_name='com.package.name'
 )
 

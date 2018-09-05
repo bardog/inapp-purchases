@@ -14,12 +14,14 @@ class GooglePlayService(InAppService):
                                 'tokens/%token%'
 
     service_account_info = None
+    service_account_file = None
     credentials = None
     authed_session = None
     package_name = None
 
-    def __init__(self, service_account_info=None, package_name=None, scopes=None, base_uri=None,
-                 products_uri=None, product_purchase_uri=None, subscription_purchase_uri=None):
+    def __init__(self, service_account_info=None, service_account_file=None,
+                 package_name=None, scopes=None, base_uri=None, products_uri=None,
+                 product_purchase_uri=None, subscription_purchase_uri=None):
         if scopes is not None:
             self.scopes = scopes
         if base_uri is not None:
@@ -32,20 +34,32 @@ class GooglePlayService(InAppService):
             self.subscription_purchase_uri = subscription_purchase_uri
         if service_account_info is not None:
             self.service_account_info = service_account_info
+        if service_account_info is not None:
+            self.service_account_file = service_account_file
         if package_name is not None:
             self.package_name = package_name
-        if self.service_account_info is not None:
+        if self.service_account_info is not None or self.service_account_file is not None:
             self.authed_session = self.create_session()
 
     def set_service_account_info(self, service_account_info):
         self.service_account_info = service_account_info
         return self
 
+    def set_service_account_file(self, service_account_file):
+        self.service_account_file = service_account_file
+        return self
+
     def generate_credentials(self):
-        self.credentials = service_account.Credentials.from_service_account_file(
-            self.service_account_info,
-            scopes=self.scopes
-        )
+        if self.service_account_info is not None:
+            self.credentials = service_account.Credentials.from_service_account_info(
+                self.service_account_info,
+                scopes=self.scopes
+            )
+        elif self.service_account_file is not None:
+            self.credentials = service_account.Credentials.from_service_account_file(
+                self.service_account_file,
+                scopes=self.scopes
+            )
         return self.credentials
 
     def create_session(self):
