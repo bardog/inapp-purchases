@@ -1,5 +1,6 @@
 # inapp-purchases
 Manage in-app purchases for Apple AppStore and Google Play
+
 [![PyPI version](https://badge.fury.io/py/inapp-purchases.svg)](https://badge.fury.io/py/inapp-purchases)
 [![Code Health](https://landscape.io/github/adanmauri/inapp-purchases/master/landscape.svg?style=flat)](https://landscape.io/github/adanmauri/inapp-purchases/master)
 
