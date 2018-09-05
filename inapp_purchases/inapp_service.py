@@ -1,8 +1,8 @@
 # coding: utf8
 
-from python_inapp_purchases.response import Response
+from inapp_purchases.response import Response
 
-class InAppPurchase(object):
+class InAppService(object):
 
     def get_products_response(self, response, additional_data=None):
         return self.get_response(response=response, data=additional_data)

@@ -36,8 +36,8 @@ setup(
     packages=setuptools.find_packages(),
 
     # Details
-    url='https://github.com/adanmauri/python-inapp-purchases.git',
-    description='Library to manage in-app purchases for Apple AppStore and Google Play',
+    url='https://github.com/adanmauri/inapp-purchases.git',
+    description='Manage in-app purchases for Apple AppStore and Google Play',
     long_description=long_description(),
     long_description_content_type="text/markdown",
     classifiers=[

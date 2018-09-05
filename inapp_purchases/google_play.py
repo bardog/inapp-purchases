@@ -2,10 +2,10 @@
 
 from google.oauth2 import service_account
 from google.auth.transport.requests import AuthorizedSession
-from python_inapp_purchases.inapp_purchase import InAppPurchase
-from python_inapp_purchases.subscription_status import SubscriptionStatus
+from inapp_purchases.inapp_service import InAppService
+from inapp_purchases.subscription_status import SubscriptionStatus
 
-class GooglePlayInAppPurchase(InAppPurchase):
+class GooglePlayService(InAppService):
     scopes = ['https://www.googleapis.com/auth/androidpublisher']
     base_uri = 'https://www.googleapis.com/androidpublisher/v3/applications'
     products_uri = '/%packageName%/inappproducts'
@@ -109,13 +109,13 @@ class GooglePlayInAppPurchase(InAppPurchase):
         data = None
         if response.ok:
             data = response.json()['inappproduct']
-        return super(GooglePlayInAppPurchase, self).get_products_response(response, data)
+        return super(GooglePlayService, self).get_products_response(response, data)
 
     def get_product_response(self, response, additional_data=None):
         data = None
         if response.ok:
             data = response.json()
-        return super(GooglePlayInAppPurchase, self).get_product_response(response, data)
+        return super(GooglePlayService, self).get_product_response(response, data)
 
     def get_subscription_response(self, response, additional_data=None):
         data = None
@@ -165,4 +165,4 @@ class GooglePlayInAppPurchase(InAppPurchase):
                     data.update({
                         'subscription_id': additional_data['subscription_id']
                     })
-        return super(GooglePlayInAppPurchase, self).get_subscription_response(response, data)
+        return super(GooglePlayService, self).get_subscription_response(response, data)

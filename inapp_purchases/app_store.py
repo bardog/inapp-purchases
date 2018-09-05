@@ -2,10 +2,10 @@
 
 import json
 import requests
-from python_inapp_purchases.inapp_purchase import InAppPurchase
-from python_inapp_purchases.subscription_status import SubscriptionStatus
+from inapp_purchases.inapp_service import InAppService
+from inapp_purchases.subscription_status import SubscriptionStatus
 
-class AppStoreInAppPurchase(InAppPurchase):
+class AppStoreService(InAppService):
     base_sandbox_uri = 'https://sandbox.itunes.apple.com/verifyReceipt'
     base_production_uri = 'https://buy.itunes.apple.com/verifyReceipt'
 
@@ -46,6 +46,26 @@ class AppStoreInAppPurchase(InAppPurchase):
         response = self.request(query=query, sandbox=sandbox)
         return self.get_product_response(response)
 
+    def get_subscription_purchase(self, receipt_data, password=None, exclude_old_transactions=None,
+                                  sandbox=None):
+        password = password if password is not None else self.password
+        exclude_old_transactions = (exclude_old_transactions
+                                    if exclude_old_transactions is not None
+                                    else self.exclude_old_transactions)
+        query = {
+            'receipt-data': receipt_data,
+        }
+        if password is not None:
+            query.update({
+                'password': password
+            })
+        if exclude_old_transactions is not None:
+            query.update({
+                'exclude-old-transactions': exclude_old_transactions
+            })
+        response = self.request(query=query, sandbox=sandbox)
+        return self.get_product_response(response)
+
     def request(self, query, sandbox):
         sandbox = sandbox if sandbox is not None else self.sandbox
         if sandbox:
@@ -58,13 +78,13 @@ class AppStoreInAppPurchase(InAppPurchase):
         data = None
         if response.ok:
             data = response.json()
-        return super(AppStoreInAppPurchase, self).get_products_response(response, data)
+        return super(AppStoreService, self).get_products_response(response, data)
 
     def get_product_response(self, response, additional_data=None):
         data = None
         if response.ok:
             data = response.json()
-        return super(AppStoreInAppPurchase, self).get_product_response(response, data)
+        return super(AppStoreService, self).get_product_response(response, data)
 
     def get_subscription_response(self, response, additional_data=None):
         data = None
@@ -113,5 +133,5 @@ class AppStoreInAppPurchase(InAppPurchase):
                 'is_trial_period': response_data['is_trial_period'],
                 'expiration_intent': expiration_intent
             }
-        return super(AppStoreInAppPurchase, self).get_subscription_response(response, data)
+        return super(AppStoreService, self).get_subscription_response(response, data)
     
