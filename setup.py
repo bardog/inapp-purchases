@@ -4,7 +4,7 @@ from distutils.core import setup
 import setuptools
 
 def version():
-    verstrline = open('python_inapp_purchases/__init__.py', "rt").read()
+    verstrline = open('inapp_purchases/__init__.py', "rt").read()
     mob = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]", verstrline, re.M)
     if mob:
         return mob.group(1)
@@ -20,7 +20,7 @@ def long_description():
 
 setup(
     # Application name
-    name='python-inapp-purchases',
+    name='inapp-purchases',
 
     # Version number
     version=version(),
