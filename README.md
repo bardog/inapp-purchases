@@ -69,9 +69,9 @@ purchase = service.get_subscription_purchase(
 
 - Exceptions
 - Google Play products data response (the raw content is returned)
-- iTunes products data response (the raw content is returned)
+- AppStore products data response (the raw content is returned)
+- Get list of products from AppStore
 - Tests
-- iTunes get list of products
 - Retrieve more information from the services
 - Documentation
 - Examples
