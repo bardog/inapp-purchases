@@ -116,10 +116,10 @@ class AppStoreService(InAppService):
             data = {
                 'purchase_id': response_data['transaction_id'],
                 'original_purchase_id': response_data['original_transaction_id'],
-                'purchase_date_ms': int(response_data['purchase_date']),
-                'original_purchase_date_ms': int(response_data['purchase_date']),
+                'purchase_date_ms': int(response_data['purchase_date_ms']),
+                'original_purchase_date_ms': int(response_data['original_purchase_date_ms']),
                 'auto_renewing': response_data['auto_renew_status'] == 1,
-                'expires_date_ms': response_data['expires_date'] == 1,
+                'expires_date_ms': int(response_data['expires_date_ms']),
                 'country_code': None,
                 'price_currency_code': None,
                 'price_amount': None,
