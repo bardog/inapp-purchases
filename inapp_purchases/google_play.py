@@ -49,7 +49,6 @@ class GooglePlayService(InAppService):
         return self
 
     def generate_credentials(self):
-        
         if self.service_account_info is not None:
             self.credentials = service_account.Credentials.from_service_account_info(
                 self.service_account_info,

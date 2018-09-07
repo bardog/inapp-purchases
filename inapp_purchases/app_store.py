@@ -89,8 +89,9 @@ class AppStoreService(InAppService):
     def get_subscription_response(self, response, additional_data=None):
         data = None
         if response.ok:
-            response_data = response.json()['receipt']
-            response_status = int(response.json()['status'])
+            raw_data = response.json()
+            response_data = raw_data['receipt']
+            response_status = int(raw_data['status'])
             cancellation_date_ms = (response_data['cancellation_date']
                                     if 'cancellation_date' in response_data
                                     else None)
@@ -118,8 +119,8 @@ class AppStoreService(InAppService):
                 'original_purchase_id': response_data['original_transaction_id'],
                 'purchase_date_ms': int(response_data['purchase_date_ms']),
                 'original_purchase_date_ms': int(response_data['original_purchase_date_ms']),
-                'auto_renewing': response_data['auto_renew_status'] == 1,
-                'expires_date_ms': int(response_data['expires_date_ms']),
+                'auto_renewing': int(raw_data['auto_renew_status']) == 1,
+                'expires_date_ms': int(response_data['expires_date']),
                 'country_code': None,
                 'price_currency_code': None,
                 'price_amount': None,
