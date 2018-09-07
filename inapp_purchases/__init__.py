@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 
 name = "inapp_purchases"
-__version__ = "0.1.3"
+__version__ = "0.1.5"

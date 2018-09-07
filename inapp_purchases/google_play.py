@@ -1,5 +1,4 @@
-# coding: utf8
-
+# coding: utf-8
 from google.oauth2 import service_account
 from google.auth.transport.requests import AuthorizedSession
 from inapp_purchases.inapp_service import InAppService
@@ -34,7 +33,7 @@ class GooglePlayService(InAppService):
             self.subscription_purchase_uri = subscription_purchase_uri
         if service_account_info is not None:
             self.service_account_info = service_account_info
-        if service_account_info is not None:
+        if service_account_file is not None:
             self.service_account_file = service_account_file
         if package_name is not None:
             self.package_name = package_name
@@ -50,6 +49,7 @@ class GooglePlayService(InAppService):
         return self
 
     def generate_credentials(self):
+        
         if self.service_account_info is not None:
             self.credentials = service_account.Credentials.from_service_account_info(
                 self.service_account_info,
@@ -135,9 +135,18 @@ class GooglePlayService(InAppService):
         data = None
         if response.ok:
             response_data = response.json()
-            cancellation_date_ms = (response_data['userCancellationTimeMillis']
+            cancellation_date_ms = (int(response_data['userCancellationTimeMillis'])
                                     if 'userCancellationTimeMillis' in response_data
                                     else None)
+            cancellation_date = (int(cancellation_date_ms/1000)
+                                 if cancellation_date_ms is not None
+                                 else None)
+            expires_date_ms = (int(response_data['expiryTimeMillis'])
+                               if 'expiryTimeMillis' in response_data
+                               else None)
+            expires_date = (int(expires_date_ms/1000)
+                            if expires_date_ms is not None
+                            else None)
             cancellation_reason = (response_data['cancelReason']
                                    if 'cancelReason' in response_data
                                    else None)
@@ -155,14 +164,18 @@ class GooglePlayService(InAppService):
             data = {
                 'purchase_id': response_data['orderId'],
                 'original_purchase_id': response_data['orderId'],
-                'purchase_date_ms': response_data['startTimeMillis'],
-                'original_purchase_date_ms': response_data['startTimeMillis'],
+                'purchase_date_ms': int(response_data['startTimeMillis']),
+                'purchase_date': int(int(response_data['startTimeMillis'])/1000),
+                'original_purchase_date_ms': int(response_data['startTimeMillis']),
+                'original_purchase_date': int(int(response_data['startTimeMillis'])/1000),
                 'auto_renewing': response_data['autoRenewing'],
-                'expires_date_ms': response_data['expiryTimeMillis'],
+                'expires_date_ms': expires_date_ms,
+                'expires_date': expires_date,
                 'country_code': response_data['countryCode'],
                 'price_currency_code': response_data['priceCurrencyCode'],
                 'price_amount': float(int(int(response_data['priceAmountMicros'])/1000)/100),
                 'cancellation_date_ms': cancellation_date_ms,
+                'cancellation_date': cancellation_date,
                 'cancellation_reason': cancellation_reason,
                 'payment_state': payment_state,
                 'status': status,

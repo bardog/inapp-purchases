@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 
 import json
 import requests
@@ -64,7 +64,7 @@ class AppStoreService(InAppService):
                 'exclude-old-transactions': exclude_old_transactions
             })
         response = self.request(query=query, sandbox=sandbox)
-        return self.get_product_response(response)
+        return self.get_subscription_response(response)
 
     def request(self, query, sandbox):
         sandbox = sandbox if sandbox is not None else self.sandbox

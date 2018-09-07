@@ -1,4 +1,4 @@
-# coding: utf8
+# coding: utf-8
 
 from inapp_purchases.response import Response
 
