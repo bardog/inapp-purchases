@@ -121,7 +121,7 @@ class AppStoreService(InAppService):
                     status = SubscriptionStatus.CANCELLED
                 elif expiration_intent >= 2 and expiration_intent <= 4:
                     status = SubscriptionStatus.EXPIRED
-                elif expiration_intent >= 2 and expiration_intent <= 4:
+                else:
                     status = SubscriptionStatus.UNKNOWN
             else:
                 status = SubscriptionStatus.UNKNOWN
