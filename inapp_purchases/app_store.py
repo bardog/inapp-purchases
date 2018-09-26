@@ -90,6 +90,7 @@ class AppStoreService(InAppService):
     def get_subscription_response(self, response, additional_data=None):
         data = None
         try:
+            logging.info(response.json())
             if response.ok:
                 raw_data = response.json()
                 response_data = raw_data['receipt']
@@ -125,6 +126,10 @@ class AppStoreService(InAppService):
                         status = SubscriptionStatus.EXPIRED
                     else:
                         status = SubscriptionStatus.UNKNOWN
+                elif response_status == 21006:
+                    status = SubscriptionStatus.EXPIRED
+                elif response_status == 21005:
+                    status = SubscriptionStatus.ACTIVE
                 else:
                     status = SubscriptionStatus.UNKNOWN
                 is_active = status == SubscriptionStatus.ACTIVE
