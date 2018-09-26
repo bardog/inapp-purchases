@@ -132,63 +132,66 @@ class GooglePlayService(InAppService):
 
     def get_subscription_response(self, response, additional_data=None):
         data = None
-        if response.ok:
-            response_data = response.json()
-            cancellation_date_ms = (int(response_data['userCancellationTimeMillis'])
-                                    if 'userCancellationTimeMillis' in response_data
+        try:
+            if response.ok:
+                response_data = response.json()
+                cancellation_date_ms = (int(response_data['userCancellationTimeMillis'])
+                                        if 'userCancellationTimeMillis' in response_data
+                                        else None)
+                cancellation_date = (int(cancellation_date_ms/1000)
+                                    if cancellation_date_ms is not None
                                     else None)
-            cancellation_date = (int(cancellation_date_ms/1000)
-                                 if cancellation_date_ms is not None
-                                 else None)
-            expires_date_ms = (int(response_data['expiryTimeMillis'])
-                               if 'expiryTimeMillis' in response_data
-                               else None)
-            expires_date = (int(expires_date_ms/1000)
-                            if expires_date_ms is not None
-                            else None)
-            cancellation_reason = (response_data['cancelReason']
-                                   if 'cancelReason' in response_data
-                                   else None)
-            payment_state = (response_data['paymentState']
-                             if 'paymentState' in response_data
-                             else None)
-            payment_state = (response_data['paymentState']
-                             if 'paymentState' in response_data
-                             else None)
-            if cancellation_reason is None:
-                status = SubscriptionStatus.ACTIVE
-            elif cancellation_reason is not None:
-                status = SubscriptionStatus.CANCELLED
-            is_active = status == SubscriptionStatus.ACTIVE
-            data = {
-                'purchase_id': response_data['orderId'],
-                'original_purchase_id': response_data['orderId'],
-                'purchase_date_ms': int(response_data['startTimeMillis']),
-                'purchase_date': int(int(response_data['startTimeMillis'])/1000),
-                'original_purchase_date_ms': int(response_data['startTimeMillis']),
-                'original_purchase_date': int(int(response_data['startTimeMillis'])/1000),
-                'auto_renewing': response_data['autoRenewing'],
-                'expires_date_ms': expires_date_ms,
-                'expires_date': expires_date,
-                'country_code': response_data['countryCode'],
-                'price_currency_code': response_data['priceCurrencyCode'],
-                'price_amount': float(int(int(response_data['priceAmountMicros'])/1000)/100),
-                'cancellation_date_ms': cancellation_date_ms,
-                'cancellation_date': cancellation_date,
-                'cancellation_reason': cancellation_reason,
-                'payment_state': payment_state,
-                'status': status,
-                'is_active': is_active,
-                'is_trial_period': None,
-                'expiration_intent': None
-            }
-            if additional_data is not None:
-                if 'package_name' in additional_data:
-                    data.update({
-                        'bundle_id': additional_data['package_name']
-                    })
-                if 'subscription_id' in additional_data:
-                    data.update({
-                        'subscription_id': additional_data['subscription_id']
-                    })
-        return super(GooglePlayService, self).get_subscription_response(response, data)
+                expires_date_ms = (int(response_data['expiryTimeMillis'])
+                                if 'expiryTimeMillis' in response_data
+                                else None)
+                expires_date = (int(expires_date_ms/1000)
+                                if expires_date_ms is not None
+                                else None)
+                cancellation_reason = (response_data['cancelReason']
+                                    if 'cancelReason' in response_data
+                                    else None)
+                payment_state = (response_data['paymentState']
+                                if 'paymentState' in response_data
+                                else None)
+                payment_state = (response_data['paymentState']
+                                if 'paymentState' in response_data
+                                else None)
+                if cancellation_reason is None:
+                    status = SubscriptionStatus.ACTIVE
+                elif cancellation_reason is not None:
+                    status = SubscriptionStatus.CANCELLED
+                is_active = status == SubscriptionStatus.ACTIVE
+                data = {
+                    'purchase_id': response_data['orderId'],
+                    'original_purchase_id': response_data['orderId'],
+                    'purchase_date_ms': int(response_data['startTimeMillis']),
+                    'purchase_date': int(int(response_data['startTimeMillis'])/1000),
+                    'original_purchase_date_ms': int(response_data['startTimeMillis']),
+                    'original_purchase_date': int(int(response_data['startTimeMillis'])/1000),
+                    'auto_renewing': response_data['autoRenewing'],
+                    'expires_date_ms': expires_date_ms,
+                    'expires_date': expires_date,
+                    'country_code': response_data['countryCode'],
+                    'price_currency_code': response_data['priceCurrencyCode'],
+                    'price_amount': float(int(int(response_data['priceAmountMicros'])/1000)/100),
+                    'cancellation_date_ms': cancellation_date_ms,
+                    'cancellation_date': cancellation_date,
+                    'cancellation_reason': cancellation_reason,
+                    'payment_state': payment_state,
+                    'status': status,
+                    'is_active': is_active,
+                    'is_trial_period': None,
+                    'expiration_intent': None
+                }
+                if additional_data is not None:
+                    if 'package_name' in additional_data:
+                        data.update({
+                            'bundle_id': additional_data['package_name']
+                        })
+                    if 'subscription_id' in additional_data:
+                        data.update({
+                            'subscription_id': additional_data['subscription_id']
+                        })
+            return super(GooglePlayService, self).get_subscription_response(response, data)
+        except Exception:
+            return super(GooglePlayService, self).get_subscription_response(response)
