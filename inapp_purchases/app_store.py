@@ -90,10 +90,9 @@ class AppStoreService(InAppService):
     def get_subscription_response(self, response, additional_data=None):
         data = None
         try:
-            logging.info(response.json())
             if response.ok:
                 raw_data = response.json()
-                response_data = raw_data['receipt']
+                response_data = raw_data['latest_receipt_info'][0]
                 response_status = int(raw_data['status'])
                 purchase_id = response_data['transaction_id']
                 original_purchase_id = response_data['original_transaction_id']
@@ -101,7 +100,7 @@ class AppStoreService(InAppService):
                 purchase_date = int(purchase_date_ms/1000)
                 original_purchase_date_ms = int(response_data['original_purchase_date_ms'])
                 original_purchase_date = int(original_purchase_date_ms/1000)
-                auto_renewing = int(raw_data['auto_renew_status']) == 1
+                auto_renewing = int(raw_data['pending_renewal_info'][0]['auto_renew_status'] == 1) if 'pending_renewal_info' in raw_data else 0
                 cancellation_date_ms = (response_data['cancellation_date']
                                         if 'cancellation_date' in response_data
                                         else None)
@@ -111,18 +110,21 @@ class AppStoreService(InAppService):
                 expiration_intent = (response_data['expiration_intent']
                                     if 'expiration_intent' in response_data
                                     else None)
-                expires_date_ms = (int(response_data['expires_date'])
+                expires_date_ms = (int(response_data['expires_date_ms'])
                                 if 'expires_date' in response_data
                                 else None)
                 expires_date = (int(expires_date_ms/1000)
                                 if expires_date_ms is not None
                                 else None)
+                
                 if expiration_intent is None and response_status == 0:
                     status = SubscriptionStatus.ACTIVE
-                elif expiration_intent is None:
+                elif expiration_intent is not None:
                     if expiration_intent == 1:
                         status = SubscriptionStatus.CANCELLED
                     elif expiration_intent >= 2 and expiration_intent <= 4:
+                        status = SubscriptionStatus.CUSTOM
+                    elif response_status == 21006:
                         status = SubscriptionStatus.EXPIRED
                     else:
                         status = SubscriptionStatus.UNKNOWN
@@ -133,10 +135,10 @@ class AppStoreService(InAppService):
                 else:
                     status = SubscriptionStatus.UNKNOWN
                 is_active = status == SubscriptionStatus.ACTIVE
-                bundle_id = response_data['bid']
+                bundle_id = raw_data['receipt']['bundle_id']
                 subscription_id = response_data['product_id']
                 is_trial_period = response_data['is_trial_period']
-
+                
                 data = {
                     'purchase_id': purchase_id,
                     'original_purchase_id': original_purchase_id,
@@ -162,4 +164,5 @@ class AppStoreService(InAppService):
                 }
             return super(AppStoreService, self).get_subscription_response(response, data)
         except Exception:
+            logging.exception(Exception)
             return super(AppStoreService, self).get_subscription_response(response)
