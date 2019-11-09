@@ -3,6 +3,7 @@
 import json
 import logging
 import requests
+import string
 from inapp_purchases.inapp_service import InAppService
 from inapp_purchases.subscription_status import SubscriptionStatus
 
@@ -49,12 +50,14 @@ class AppStoreService(InAppService):
 
     def get_subscription_purchase(self, receipt_data, password=None, exclude_old_transactions=None,
                                   sandbox=None):
+        logging.info(('receipt_data', receipt_data))
         password = password if password is not None else self.password
+        sandbox = sandbox if sandbox is not None else self.sandbox
         exclude_old_transactions = (exclude_old_transactions
                                     if exclude_old_transactions is not None
                                     else self.exclude_old_transactions)
         query = {
-            'receipt-data': receipt_data,
+            'receipt-data': string.strip(receipt_data)
         }
         if password is not None:
             query.update({
@@ -92,6 +95,11 @@ class AppStoreService(InAppService):
         try:
             if response.ok:
                 raw_data = response.json()
+                logging.info(('raw_data', raw_data))
+
+                if 'latest_receipt_info' not in raw_data:
+                    raise Exception(response)
+
                 response_data = raw_data['latest_receipt_info'][0]
                 response_status = int(raw_data['status'])
                 purchase_id = response_data['transaction_id']
